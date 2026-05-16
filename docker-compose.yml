@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: koins_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: koins_db
+      POSTGRES_USER: koins_user
+      POSTGRES_PASSWORD: koins_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - koins_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  koins_postgres_data:
