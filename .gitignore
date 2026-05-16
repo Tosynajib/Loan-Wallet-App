@@ -13,6 +13,7 @@ target/
 .env
 .env.local
 .env.*.local
+.env.file
 
 # Logs
 logs/
@@ -24,3 +25,5 @@ logs/
 # Docker volumes
 postgres_data/.env
 .env
+.env.file
+.env*
