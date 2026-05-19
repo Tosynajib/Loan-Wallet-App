@@ -13,11 +13,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Represents a customer/admin account in the system.
- *
- * We implement UserDetails so Spring Security can authenticate this user directly.
- */
 @Getter
 @Setter
 @Builder
@@ -46,9 +41,6 @@ public class User implements UserDetails {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    /**
-     * Password must always be stored encrypted, never as plain text.
-     */
     @Column(nullable = false)
     private String password;
 
@@ -87,26 +79,16 @@ public class User implements UserDetails {
         this.updatedAt = LocalDateTime.now();
     }
 
-    /**
-     * Spring Security uses authorities to check permissions.
-     * Example: ROLE_USER, ROLE_ADMIN
-     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
-    /**
-     * We use email as the login username.
-     */
     @Override
     public String getUsername() {
         return email;
     }
 
-    /**
-     * Suspended users should not be allowed to authenticate.
-     */
     @Override
     public boolean isEnabled() {
         return status == AccountStatus.ACTIVE;

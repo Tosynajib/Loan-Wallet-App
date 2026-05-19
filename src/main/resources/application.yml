@@ -5,11 +5,29 @@ spring:
   application:
     name: fintech-loan-wallet-api
 
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   datasource:
-    url: jdbc:postgresql://localhost:5433/koins_db
-    username: koins_user
-    password: koins_password
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/koins_db}
+    username: ${DB_USERNAME:koins_user}
+    password: ${DB_PASSWORD:koins_password}
     driver-class-name: org.postgresql.Driver
+
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:koins}
+    password: ${SPRING_RABBITMQ_PASSWORD:koins_password}
 
   jpa:
     hibernate:
@@ -25,18 +43,43 @@ spring:
 
 app:
   jwt:
-    secret: change-this-secret-to-a-very-long-secure-key-for-local-development-only-123456
-    expiration-minutes: 120
+    secret: ${JWT_SECRET:change-this-secret-to-a-very-long-secure-key-for-local-development-only-123456}
+    expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
 
-  paystack:
-    base-url: https://api.paystack.co
-    secret-key:
-    callback-url: http://localhost:8080/api/v1/payments/callback
+  email:
+    provider: ${EMAIL_PROVIDER:logging}
+    from-address: ${MAIL_FROM_ADDRESS:no-reply@koins.local}
+    from-name: ${MAIL_FROM_NAME:KOINS}
+
+  sms:
+    provider: ${SMS_PROVIDER:logging}
 
   termii:
-    base-url: https://api.ng.termii.com
-    api-key:
-    sender-id: KOINS
+    base-url: ${TERMII_BASE_URL:https://api.ng.termii.com}
+    api-key: ${TERMII_API_KEY:}
+    sender-id: ${TERMII_SENDER_ID:KOINS}
+    channel: ${TERMII_CHANNEL:generic}
+    message-type: ${TERMII_MESSAGE_TYPE:plain}
+
+  rabbitmq:
+    notification-exchange: koins.notification.exchange
+    notification-queue: koins.notification.queue
+    notification-routing-key: koins.notification.send
+    payment-exchange: koins.payment.exchange
+    payment-confirmation-queue: koins.payment.confirmation.queue
+    payment-confirmation-routing-key: koins.payment.confirmed
+
+  admin:
+    email: ${APP_ADMIN_EMAIL:admin@koins.local}
+    password: ${APP_ADMIN_PASSWORD:AdminPassword123}
+    full-name: ${APP_ADMIN_FULL_NAME:System Administrator}
+    phone-number: ${APP_ADMIN_PHONE:+2348000000000}
+    bvn-or-nin: ${APP_ADMIN_BVN_OR_NIN:00000000000}
+
+  paystack:
+    base-url: ${PAYSTACK_BASE_URL:https://api.paystack.co}
+    secret-key: ${PAYSTACK_SECRET_KEY:}
+    callback-url: ${PAYSTACK_CALLBACK_URL:http://localhost:8080/api/v1/payments/callback}
 
 springdoc:
   swagger-ui:

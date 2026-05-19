@@ -9,13 +9,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Represents the user's wallet.
- *
- * Important fintech rule:
- * - Use BigDecimal for money.
- * - Never use double/float for financial amounts.
- */
 @Getter
 @Setter
 @Builder

@@ -1,9 +1,6 @@
 package com.tosin.koins.auth.controller;
 
-import com.tosin.koins.auth.dto.LoginRequest;
-import com.tosin.koins.auth.dto.LoginResponse;
-import com.tosin.koins.auth.dto.SignupRequest;
-import com.tosin.koins.auth.dto.SignupResponse;
+import com.tosin.koins.auth.dto.*;
 import com.tosin.koins.auth.facade.AuthFacade;
 import com.tosin.koins.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,9 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * Authentication controller.
- *
- * This controller is intentionally thin.
- * It does not contain business logic or response-building logic.
  */
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -39,4 +33,29 @@ public class AuthController {
     public ApiResponse<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         return authFacade.login(request);
     }
+
+    @PostMapping("/forgot-password")
+    @Operation(summary = "Request password reset OTP")
+    public ApiResponse<OtpResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        return authFacade.forgotPassword(request);
+    }
+
+    @PostMapping("/resend-otp")
+    @Operation(summary = "Resend password reset OTP")
+    public ApiResponse<OtpResponse> resendOtp(@Valid @RequestBody ResendOtpRequest request) {
+        return authFacade.resendOtp(request);
+    }
+
+    @PostMapping("/reset-password")
+    @Operation(summary = "Reset password using OTP")
+    public ApiResponse<ResetPasswordResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        return authFacade.resetPassword(request);
+    }
+
+    @PostMapping("/logout")
+    @Operation(summary = "Logout current user")
+    public ApiResponse<Void> logout() {
+        return authFacade.logout();
+    }
+
 }

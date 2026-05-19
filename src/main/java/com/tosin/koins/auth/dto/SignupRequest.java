@@ -5,11 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-/**
- * Request body for user signup.
- *
- * Validation annotations protect the service layer from bad input.
- */
 public record SignupRequest(
 
         @NotBlank(message = "Full name is required")

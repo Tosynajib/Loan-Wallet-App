@@ -98,4 +98,25 @@ public class GlobalExceptionHandler {
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ApiResponse.failure("Something went wrong. Please try again later."));
   }
+
+  @ExceptionHandler(PaymentException.class)
+  public ResponseEntity<ApiResponse<Void>> handlePaymentException(PaymentException ex) {
+    return ResponseEntity
+            .status(HttpStatus.BAD_GATEWAY)
+            .body(ApiResponse.failure(ex.getMessage()));
+  }
+
+  @ExceptionHandler(SmsException.class)
+  public ResponseEntity<ApiResponse<Void>> handleSmsException(SmsException ex) {
+    return ResponseEntity
+            .status(HttpStatus.BAD_GATEWAY)
+            .body(ApiResponse.failure(ex.getMessage()));
+  }
+
+  @ExceptionHandler(EmailException.class)
+  public ResponseEntity<ApiResponse<Void>> handleEmailException(EmailException ex) {
+    return ResponseEntity
+            .status(HttpStatus.BAD_GATEWAY)
+            .body(ApiResponse.failure(ex.getMessage()));
+  }
 }

@@ -2,18 +2,20 @@
 target/
 *.class
 
-# IntelliJ
+# IDE files
 .idea/
 *.iml
-
-# VS Code
 .vscode/
+
+# Project-specific Maven cache
+.maven/repository/
 
 # Environment secrets
 .env
-.env.local
-.env.*.local
+.env.*
+*.env
 .env.file
+application-local.yml
 
 # Logs
 logs/
@@ -22,8 +24,6 @@ logs/
 # OS files
 .DS_Store
 
-# Docker volumes
-postgres_data/.env
-.env
-.env.file
-.env*
+# Docker/local generated data
+postgres_data/
+rabbitmq_data/

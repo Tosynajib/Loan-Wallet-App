@@ -1,9 +1,6 @@
 package com.tosin.koins.auth.facade;
 
-import com.tosin.koins.auth.dto.LoginRequest;
-import com.tosin.koins.auth.dto.LoginResponse;
-import com.tosin.koins.auth.dto.SignupRequest;
-import com.tosin.koins.auth.dto.SignupResponse;
+import com.tosin.koins.auth.dto.*;
 import com.tosin.koins.common.response.ApiResponse;
 
 /**
@@ -19,4 +16,12 @@ public interface AuthFacade {
     ApiResponse<SignupResponse> signup(SignupRequest request);
 
     ApiResponse<LoginResponse> login(LoginRequest request);
+
+    ApiResponse<OtpResponse> forgotPassword(ForgotPasswordRequest request);
+
+    ApiResponse<OtpResponse> resendOtp(ResendOtpRequest request);
+
+    ApiResponse<ResetPasswordResponse> resetPassword(ResetPasswordRequest request);
+
+    ApiResponse<Void> logout();
 }

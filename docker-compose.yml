@@ -12,5 +12,68 @@ services:
     volumes:
       - koins_postgres_data:/var/lib/postgresql/data
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: koins_rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: koins
+      RABBITMQ_DEFAULT_PASS: koins_password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - koins_rabbitmq_data:/var/lib/rabbitmq
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: koins_app
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/koins_db
+      DB_USERNAME: koins_user
+      DB_PASSWORD: koins_password
+
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: koins
+      SPRING_RABBITMQ_PASSWORD: koins_password
+
+      JWT_SECRET: change-this-secret-to-a-very-long-secure-key-for-docker-local-development-123456
+      JWT_EXPIRATION_MINUTES: 120
+
+      PAYSTACK_BASE_URL: https://api.paystack.co
+      PAYSTACK_SECRET_KEY: ${PAYSTACK_SECRET_KEY:-}
+      PAYSTACK_CALLBACK_URL: ${PAYSTACK_CALLBACK_URL:-http://localhost:8080/api/v1/payments/callback}
+
+      SMS_PROVIDER: logging
+      TERMII_BASE_URL: https://api.ng.termii.com
+      TERMII_API_KEY: ${TERMII_API_KEY:-}
+      TERMII_SENDER_ID: KOINS
+      TERMII_CHANNEL: generic
+      TERMII_MESSAGE_TYPE: plain
+
+      EMAIL_PROVIDER: logging
+      MAIL_HOST: smtp.gmail.com
+      MAIL_PORT: 587
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-no-reply@koins.local}
+      MAIL_FROM_NAME: KOINS
+
+      APP_ADMIN_EMAIL: admin@koins.local
+      APP_ADMIN_PASSWORD: AdminPassword123
+      APP_ADMIN_FULL_NAME: System Administrator
+      APP_ADMIN_PHONE: "+2348000000000"
+      APP_ADMIN_BVN_OR_NIN: "00000000000"
+
 volumes:
   koins_postgres_data:
+  koins_rabbitmq_data:

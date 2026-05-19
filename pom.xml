@@ -92,6 +92,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- RabbitMQ messaging support -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
         <!-- DevTools: hot reload during development -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -105,6 +111,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!-- JavaMail support for sending real emails -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
         <!-- Spring Security test helpers -->

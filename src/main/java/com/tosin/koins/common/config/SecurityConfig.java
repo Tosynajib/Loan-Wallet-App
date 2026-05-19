@@ -33,6 +33,7 @@ public class SecurityConfig {
     private static final String[] PUBLIC_ENDPOINTS = {
             "/",
             "/api/v1/auth/**",
+            "/api/v1/webhooks/**",
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/api-docs/**"
@@ -41,23 +42,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                /**
-                 * CSRF is mainly needed for browser session authentication.
-                 * Since this is a stateless REST API using JWT, we disable it.
-                 */
                 .csrf(csrf -> csrf.disable())
 
-                /**
-                 * We do not want Spring Security to create HTTP sessions.
-                 * Each request must authenticate using JWT.
-                 */
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/loans/*/approve")
+                        .hasAnyRole("SUPER_ADMIN", "LOAN_OFFICER")
+
+                        .requestMatchers("/api/v1/admin/loans/*/disburse")
+                        .hasAnyRole("SUPER_ADMIN", "FINANCE_ADMIN")
+
+                        .requestMatchers("/api/v1/admin/**")
+                        .hasAnyRole("SUPER_ADMIN", "LOAN_OFFICER", "FINANCE_ADMIN", "SUPPORT_ADMIN")
                         .anyRequest().authenticated()
                 )
 
@@ -80,10 +80,6 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    /**
-     * BCrypt hashes passwords securely.
-     * We never store plain text passwords.
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

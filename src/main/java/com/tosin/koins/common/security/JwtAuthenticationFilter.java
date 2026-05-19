@@ -32,16 +32,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final CustomUserDetailsService userDetailsService;
 
-    /**
-     * Skip JWT validation completely for public endpoints.
-     *
-     * This prevents signup/login/swagger from trying to parse an empty or fake token.
-     */
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
         String path = request.getServletPath();
 
         return path.startsWith("/api/v1/auth")
+                || path.startsWith("/api/v1/webhooks")
                 || path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")
                 || path.equals("/");

@@ -1,9 +1,6 @@
 package com.tosin.koins.auth.facade;
 
-import com.tosin.koins.auth.dto.LoginRequest;
-import com.tosin.koins.auth.dto.LoginResponse;
-import com.tosin.koins.auth.dto.SignupRequest;
-import com.tosin.koins.auth.dto.SignupResponse;
+import com.tosin.koins.auth.dto.*;
 import com.tosin.koins.auth.service.AuthService;
 import com.tosin.koins.common.response.ApiResponse;
 import com.tosin.koins.common.response.ApplicationResponseFactory;
@@ -35,5 +32,28 @@ public class AuthFacadeImpl implements AuthFacade {
     public ApiResponse<LoginResponse> login(LoginRequest request) {
         LoginResponse response = authService.login(request);
         return responseFactory.success("Login successful", response);
+    }
+
+    @Override
+    public ApiResponse<OtpResponse> forgotPassword(ForgotPasswordRequest request) {
+        OtpResponse response = authService.forgotPassword(request);
+        return responseFactory.success("OTP sent successfully", response);
+    }
+
+    @Override
+    public ApiResponse<OtpResponse> resendOtp(ResendOtpRequest request) {
+        OtpResponse response = authService.resendOtp(request);
+        return responseFactory.success("OTP resent successfully", response);
+    }
+
+    @Override
+    public ApiResponse<ResetPasswordResponse> resetPassword(ResetPasswordRequest request) {
+        ResetPasswordResponse response = authService.resetPassword(request);
+        return responseFactory.success("Password reset successful", response);
+    }
+
+    @Override
+    public ApiResponse<Void> logout() {
+        return responseFactory.success("Logout successful. Please discard the token on the client side.");
     }
 }
